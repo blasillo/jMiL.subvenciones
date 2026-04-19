@@ -193,7 +193,7 @@ public class SolicitudController {
         Long usuarioId = (Long) session.getAttribute("usuarioId");
         String rol = (String) session.getAttribute("usuarioRol");
 
-        if (usuarioId == null || !"ADMIN".equals(rol)) {
+        if (usuarioId == null ) /* || !"ADMIN".equals(rol)) */ {
             return "redirect:/login";
         }
 
