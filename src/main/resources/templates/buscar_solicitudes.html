@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Solicitudes - Portal de Subvenciones</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            font-size: 24px;
+        }
+        
+        .logout {
+            background: rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .search-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .search-card h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 150px;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        select,
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+        
+        select:focus,
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            align-self: flex-end;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .results-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background-color: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-pendiente {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-aprobada {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-denegada {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Portal de Subvenciones</h1>
+        <a href="/logout" class="logout">Cerrar Sesión</a>
+    </header>
+    
+    <div class="container">
+        <a href="/solicitudes/dashboard" class="back-link">← Volver al dashboard</a>
+        
+        <div class="search-card">
+            <h2>Buscar Solicitudes</h2>
+            
+            <form method="get" action="/solicitudes/buscar" class="search-form">
+                <div class="form-group">
+                    <label for="estado">Estado:</label>
+                    <select name="estado" id="estado">
+                        <option value="">Todos los estados</option>
+                        <option value="PENDIENTE" th:selected="${filtroEstado == 'PENDIENTE'}">Pendientes</option>
+                        <option value="APROBADA" th:selected="${filtroEstado == 'APROBADA'}">Aprobadas</option>
+                        <option value="DENEGADA" th:selected="${filtroEstado == 'DENEGADA'}">Denegadas</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoria">Categoría:</label>
+                    <select name="categoria" id="categoria">
+                        <option value="">Todas las categorías</option>
+                        <option value="Educación" th:selected="${filtroCategoria == 'Educación'}">Educación</option>
+                        <option value="Vivienda" th:selected="${filtroCategoria == 'Vivienda'}">Vivienda</option>
+                        <option value="Empresa" th:selected="${filtroCategoria == 'Empresa'}">Empresa</option>
+                        <option value="Salud" th:selected="${filtroCategoria == 'Salud'}">Salud</option>
+                    </select>
+                </div>
+                
+                <button type="submit">Buscar</button>
+            </form>
+        </div>
+        
+        <!-- Resultados -->
+        <div class="results-card">
+            <div th:if="${!solicitudes.isEmpty()}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Solicitante</th>
+                            <th>Categoría</th>
+                            <th>Monto (€)</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="solicitud : ${solicitudes}">
+                            <td th:text="${solicitud.id}"></td>
+                            <td th:text="${solicitud.titulo}"></td>
+                            <td th:text="${solicitud.usuario.nombre + ' ' + solicitud.usuario.apellidos}"></td>
+                            <td th:text="${solicitud.categoria}"></td>
+                            <td th:text="${#numbers.formatDecimal(solicitud.montoSolicitado, 1, 2)}"></td>
+                            <td>
+                                <span class="status-badge"
+                                      th:classappend="${'status-' + solicitud.estado.toLowerCase()}"
+                                      th:text="${solicitud.estado}"></span>
+                            </td>
+                            <td th:text="${#temporals.format(solicitud.fechaCreacion, 'dd/MM/yyyy')}"></td>
+                            <td>
+                                <a th:href="@{/solicitudes/detalle/{id}(id=${solicitud.id})}" class="action-link">
+                                    Ver Detalle
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div th:if="${solicitudes.isEmpty()}" class="empty">
+                <p>No se encontraron solicitudes con los criterios de búsqueda</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

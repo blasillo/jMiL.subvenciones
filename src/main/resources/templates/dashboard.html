@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Subvenciones - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            font-size: 24px;
+        }
+        
+        .user-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .logout {
+            background: rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .logout:hover {
+            background: rgba(255,255,255,0.5);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .header-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .header-panel h2 {
+            color: #333;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .admin-section {
+            margin-top: 20px;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .search-form select,
+        .search-form input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .search-form button {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background-color: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-pendiente {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-aprobada {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-denegada {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .admin-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Portal de Subvenciones</h1>
+        <div class="user-info">
+            <span th:if="${usuario}">
+                <span th:text="${usuario.nombre}"></span>
+                <span th:if="${esAdmin}" class="admin-badge">ADMIN</span>
+            </span>
+            <a href="/logout" class="logout">Cerrar Sesión</a>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="header-panel">
+            <div>
+                <h2 th:if="${esAdmin}">Gestión de Solicitudes</h2>
+                <h2 th:unless="${esAdmin}">Mis Solicitudes</h2>
+            </div>
+            <div th:unless="${esAdmin}">
+                <a href="/solicitudes/nueva" class="btn btn-success">+ Nueva Solicitud</a>
+            </div>
+        </div>
+        
+        <!-- Sección de administrador -->
+        <div th:if="${esAdmin}" class="admin-section">
+            <h3>Panel de Administración</h3>
+            <div class="search-form">
+                <form method="get" action="/solicitudes/buscar" style="display: flex; gap: 10px; width: 100%;">
+                    <select name="estado" style="flex: 1;">
+                        <option value="">Todos los estados</option>
+                        <option value="PENDIENTE">Pendientes</option>
+                        <option value="APROBADA">Aprobadas</option>
+                        <option value="DENEGADA">Denegadas</option>
+                    </select>
+                    <select name="categoria" style="flex: 1;">
+                        <option value="">Todas las categorías</option>
+                        <option value="Educación">Educación</option>
+                        <option value="Vivienda">Vivienda</option>
+                        <option value="Empresa">Empresa</option>
+                        <option value="Salud">Salud</option>
+                    </select>
+                    <button type="submit">Buscar</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Lista de solicitudes -->
+        <div th:if="${!solicitudes.isEmpty()}" style="margin-top: 20px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Usuario</th>
+                        <th>Categoría</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="solicitud : ${solicitudes}">
+                        <td th:text="${solicitud.id}"></td>
+                        <td th:text="${solicitud.titulo}"></td>
+                        <td th:text="${solicitud.usuario.nombre + ' ' + solicitud.usuario.apellidos}"></td>
+                        <td th:text="${solicitud.categoria}"></td>
+                        <td th:text="${#numbers.formatDecimal(solicitud.montoSolicitado, 1, 2)} + '€'"></td>
+                        <td>
+                            <span class="status-badge"
+                                  th:classappend="${'status-' + solicitud.estado.toLowerCase()}"
+                                  th:text="${solicitud.estado}"></span>
+                        </td>
+                        <td th:text="${#temporals.format(solicitud.fechaCreacion, 'dd/MM/yyyy')}"></td>
+                        <td>
+                            <a th:href="@{/solicitudes/detalle/{id}(id=${solicitud.id})}" class="action-link">Ver</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Sin solicitudes -->
+        <div th:if="${solicitudes.isEmpty()}" class="empty">
+            <p th:if="${esAdmin}">No hay solicitudes registradas</p>
+            <p th:unless="${esAdmin}">Aún no has realizado ninguna solicitud</p>
+        </div>
+    </div>
+</body>
+</html>

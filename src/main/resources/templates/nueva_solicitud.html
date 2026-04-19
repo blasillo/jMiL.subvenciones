@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Solicitud - Portal de Subvenciones</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            font-size: 24px;
+        }
+        
+        .logout {
+            background: rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .form-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input-wrapper input[type="file"] {
+            display: none;
+        }
+        
+        .file-label {
+            display: block;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-label:hover {
+            border-color: #667eea;
+            background-color: #f9f9f9;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-cancel {
+            background: #ccc;
+            color: #333;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Portal de Subvenciones</h1>
+        <a href="/logout" class="logout">Cerrar Sesión</a>
+    </header>
+    
+    <div class="container">
+        <div class="form-card">
+            <h2>Nueva Solicitud de Subvención</h2>
+            
+            <form method="post" action="/solicitudes/crear" enctype="multipart/form-data">
+                <!-- Información de la Solicitud -->
+                <h3 style="margin-top: 20px; margin-bottom: 15px; color: #667eea; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">
+                    Información de la Solicitud
+                </h3>
+                
+                <div class="form-group">
+                    <label for="titulo">Título de la Solicitud:</label>
+                    <input type="text" id="titulo" name="titulo" required>
+                    <div class="help-text">Breve descripción del motivo de la solicitud</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoria">Categoría:</label>
+                    <select id="categoria" name="categoria" required>
+                        <option value="">-- Selecciona una categoría --</option>
+                        <option value="Educación">Educación</option>
+                        <option value="Vivienda">Vivienda</option>
+                        <option value="Empresa">Empresa</option>
+                        <option value="Salud">Salud</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="descripcion">Descripción Detallada:</label>
+                    <textarea id="descripcion" name="descripcion" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="montoSolicitado">Monto Solicitado (€):</label>
+                    <input type="number" id="montoSolicitado" name="montoSolicitado" step="0.01" required>
+                </div>
+                
+                <!-- Información Financiera y Personal -->
+                <h3 style="margin-top: 20px; margin-bottom: 15px; color: #667eea; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">
+                    Información Financiera y Personal
+                </h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ingresoMensual">Ingreso Mensual (€):</label>
+                        <input type="number" id="ingresoMensual" name="ingresoMensual" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="miembrosFamilia">Miembros de la Familia:</label>
+                        <input type="number" id="miembrosFamilia" name="miembrosFamilia" min="1" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="situacionLaboral">Situación Laboral:</label>
+                    <select id="situacionLaboral" name="situacionLaboral" required>
+                        <option value="">-- Selecciona una opción --</option>
+                        <option value="Empleado">Empleado</option>
+                        <option value="Desempleado">Desempleado</option>
+                        <option value="Autónomo">Autónomo</option>
+                        <option value="Jubilado">Jubilado</option>
+                        <option value="Estudiante">Estudiante</option>
+                    </select>
+                </div>
+                
+                <!-- Archivos -->
+                <h3 style="margin-top: 20px; margin-bottom: 15px; color: #667eea; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">
+                    Documentación
+                </h3>
+                
+                <div class="form-group">
+                    <label>Archivo de Apoyo (Opcional):</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="archivo" name="archivo">
+                        <label for="archivo" class="file-label">
+                            📎 Haz clic para seleccionar un archivo o arrastra aquí
+                        </label>
+                    </div>
+                    <div class="help-text">Formatos aceptados: PDF, DOC, DOCX, JPG, PNG (máx. 10MB)</div>
+                </div>
+                
+                <!-- Botones -->
+                <div class="btn-group">
+                    <button type="submit" class="btn-submit">Enviar Solicitud</button>
+                    <button type="button" class="btn-cancel" onclick="window.location.href='/solicitudes/dashboard'">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
