@@ -36,7 +36,7 @@ public class SolicitudController {
     private UsuarioRepository usuarioRepository;
 
     // Directorio de cargas (VULNERABLE: sin validación de ruta)
-    private static final String UPLOAD_DIR = "uploads/";
+    private static final String UPLOAD_DIR = "/uploads/";
 
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
@@ -92,17 +92,22 @@ public class SolicitudController {
                                  HttpSession session,
                                  Model model) {
 
+
         Long usuarioId = (Long) session.getAttribute("usuarioId");
 
         if (usuarioId == null) {
             return "redirect:/login";
         }
 
+
+
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
 
         if (usuario.isEmpty()) {
             return "redirect:/login";
         }
+
+        System.out.println("Archivo recibido: " + (archivo == null ? "null" : archivo.getOriginalFilename() + " tamaño=" + archivo.getSize()));
 
         Solicitud solicitud = new Solicitud();
         solicitud.setUsuario(usuario.get());
