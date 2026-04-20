@@ -15,7 +15,7 @@
     <groupId>com.educativo</groupId>
     <artifactId>subvenciones-vulnerable</artifactId>
     <version>1.0.0</version>
-    <name>Aplicación Vulnerable - Curso Seguridad Web</name>
+    <n>Aplicación Vulnerable - Curso Seguridad Web</n>
 
     <properties>
         <java.version>17</java.version>
@@ -38,6 +38,25 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!-- ACTUATOR: expone endpoints de monitorización (VULNERABLE)    -->
+        <!-- Todos los endpoints quedan abiertos vía application.properties-->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!-- SWAGGER / OPENAPI: documentación interactiva de la API       -->
+        <!-- Interfaz accesible en /swagger-ui.html                       -->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.2.0</version>
         </dependency>
 
         <!-- Base de datos en memoria para pruebas -->

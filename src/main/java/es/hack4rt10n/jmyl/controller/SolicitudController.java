@@ -273,6 +273,7 @@ public class SolicitudController {
     @GetMapping("/buscar")
     public String buscar(@RequestParam(required = false) String estado,
                          @RequestParam(required = false) String categoria,
+                         @RequestParam(required = false) Integer anio,
                          HttpSession session,
                          Model model) {
 
@@ -283,17 +284,35 @@ public class SolicitudController {
             return "redirect:/login";
         }
 
+        boolean tieneEstado    = estado    != null && !estado.isEmpty();
+        boolean tieneCategoria = categoria != null && !categoria.isEmpty();
+        boolean tieneAnio      = anio      != null;
+
         List<Solicitud> resultados;
 
-        if (estado != null && !estado.isEmpty()) {
+        if (tieneAnio && tieneEstado && tieneCategoria) {
+            resultados = solicitudRepository.findByAnioAndEstadoAndCategoria(anio, estado, categoria);
+        } else if (tieneAnio && tieneEstado) {
+            resultados = solicitudRepository.findByAnioAndEstado(anio, estado);
+        } else if (tieneAnio && tieneCategoria) {
+            resultados = solicitudRepository.findByAnioAndCategoria(anio, categoria);
+        } else if (tieneEstado && tieneCategoria) {
+            resultados = solicitudRepository.findByEstadoAndCategoria(estado, categoria);
+        } else if (tieneAnio) {
+            resultados = solicitudRepository.findByAnio(anio);
+        } else if (tieneEstado) {
             resultados = solicitudRepository.findByEstado(estado);
+        } else if (tieneCategoria) {
+            resultados = solicitudRepository.findByCategoria(categoria);
         } else {
             resultados = solicitudRepository.findAll();
         }
 
-        model.addAttribute("solicitudes", resultados);
-        model.addAttribute("filtroEstado", estado);
-        model.addAttribute("filtroCategoria", categoria);
+        model.addAttribute("solicitudes",      resultados);
+        model.addAttribute("filtroEstado",     estado);
+        model.addAttribute("filtroCategoria",  categoria);
+        model.addAttribute("filtroAnio",       anio);
+        model.addAttribute("aniosDisponibles", solicitudRepository.findAniosDisponibles());
 
         return "buscar_solicitudes";
     }
