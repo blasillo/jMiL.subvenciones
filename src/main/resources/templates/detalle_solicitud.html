@@ -308,7 +308,7 @@
                     <div class="info-value" th:text="${solicitud.categoria}"></div>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Monto Solicitado</div>
+                    <div class="info-label">Cantidad Solicitada</div>
                     <div class="info-value" th:text="${#numbers.formatDecimal(solicitud.montoSolicitado, 1, 2)} + '€'"></div>
                 </div>
             </div>
@@ -365,7 +365,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="montoAprobado">Monto a Aprobar (€):</label>
+                            <label for="montoAprobado">Cantidad Aprobada (€):</label>
                             <input type="number" id="montoAprobado" name="montoAprobado" step="0.01" 
                                    th:value="${solicitud.montoSolicitado}">
                         </div>

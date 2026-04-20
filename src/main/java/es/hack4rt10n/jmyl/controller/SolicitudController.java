@@ -39,29 +39,54 @@ public class SolicitudController {
     private static final String UPLOAD_DIR = "/uploads/";
 
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model) {
-        Long usuarioId = (Long) session.getAttribute("usuarioId");
-        String rol = (String) session.getAttribute("usuarioRol");
+    public String dashboard(@RequestParam(required = false) String estado,
+                            @RequestParam(required = false) String categoria,
+                            @RequestParam(required = false) Integer anio,
+                            HttpSession session,
+                            Model model) {
 
-        if (usuarioId == null) {
-            return "redirect:/login";
-        }
+        Long usuarioId = (Long) session.getAttribute("usuarioId");
+        String rol     = (String) session.getAttribute("usuarioRol");
+
+        if (usuarioId == null) return "redirect:/login";
 
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
-
-        if (usuario.isEmpty()) {
-            return "redirect:/login";
-        }
+        if (usuario.isEmpty()) return "redirect:/login";
 
         if ("ADMIN".equals(rol)) {
-            // Admin ve todas las solicitudes
-            List<Solicitud> solicitudes = solicitudRepository.findAll();
-            model.addAttribute("solicitudes", solicitudes);
-            model.addAttribute("esAdmin", true);
+            boolean tieneEstado    = estado    != null && !estado.isEmpty();
+            boolean tieneCategoria = categoria != null && !categoria.isEmpty();
+            boolean tieneAnio      = anio      != null;
+
+            List<Solicitud> solicitudes;
+
+            if (tieneAnio && tieneEstado && tieneCategoria) {
+                solicitudes = solicitudRepository.findByAnioAndEstadoAndCategoria(anio, estado, categoria);
+            } else if (tieneAnio && tieneEstado) {
+                solicitudes = solicitudRepository.findByAnioAndEstado(anio, estado);
+            } else if (tieneAnio && tieneCategoria) {
+                solicitudes = solicitudRepository.findByAnioAndCategoria(anio, categoria);
+            } else if (tieneEstado && tieneCategoria) {
+                solicitudes = solicitudRepository.findByEstadoAndCategoria(estado, categoria);
+            } else if (tieneAnio) {
+                solicitudes = solicitudRepository.findByAnio(anio);
+            } else if (tieneEstado) {
+                solicitudes = solicitudRepository.findByEstado(estado);
+            } else if (tieneCategoria) {
+                solicitudes = solicitudRepository.findByCategoria(categoria);
+            } else {
+                solicitudes = solicitudRepository.findAll();
+            }
+
+            model.addAttribute("solicitudes",      solicitudes);
+            model.addAttribute("esAdmin",          true);
+            model.addAttribute("filtroEstado",     estado);
+            model.addAttribute("filtroCategoria",  categoria);
+            model.addAttribute("filtroAnio",       anio);
+            model.addAttribute("aniosDisponibles", solicitudRepository.findAniosDisponibles());
+
         } else {
-            // Usuario ve solo sus solicitudes
-            List<Solicitud> solicitudes = solicitudRepository.findByUsuario(usuario.get());
-            model.addAttribute("solicitudes", solicitudes);
+            model.addAttribute("solicitudes", solicitudRepository.findByUsuario(usuario.get()));
             model.addAttribute("esAdmin", false);
         }
 

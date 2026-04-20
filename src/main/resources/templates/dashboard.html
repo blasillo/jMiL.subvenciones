@@ -5,285 +5,246 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Subvenciones - Dashboard</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; }
+
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: white; padding: 20px;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        
-        header h1 {
-            font-size: 24px;
-        }
-        
-        .user-info {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
+        header h1 { font-size: 24px; }
+        .user-info { display: flex; gap: 20px; align-items: center; }
         .logout {
-            background: rgba(255,255,255,0.3);
-            padding: 8px 16px;
-            border-radius: 4px;
-            color: white;
-            text-decoration: none;
-            transition: background 0.3s;
+            background: rgba(255,255,255,0.3); padding: 8px 16px;
+            border-radius: 4px; color: white; text-decoration: none;
         }
-        
-        .logout:hover {
-            background: rgba(255,255,255,0.5);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-        
-        .header-panel {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .header-panel h2 {
-            color: #333;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: transform 0.2s;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .btn-success {
-            background: #28a745;
-            color: white;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .admin-section {
-            margin-top: 20px;
-        }
-        
-        .search-form {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .search-form select,
-        .search-form input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .search-form button {
-            padding: 8px 16px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        table {
-            width: 100%;
-            background: white;
-            border-collapse: collapse;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        th {
-            background-color: #667eea;
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: bold;
-        }
-        
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        tr:hover {
-            background-color: #f9f9f9;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .status-pendiente {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        
-        .status-aprobada {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        
-        .status-denegada {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        
-        .action-link {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .action-link:hover {
-            text-decoration: underline;
-        }
-        
-        .empty {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-            background: white;
-            border-radius: 8px;
-        }
-        
+        .logout:hover { background: rgba(255,255,255,0.5); }
         .admin-badge {
-            background: #ff6b6b;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
+            background: #ff6b6b; color: white;
+            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;
         }
+
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+
+        .header-panel {
+            background: white; padding: 20px; border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .header-panel h2 { color: #333; }
+
+        .btn-success {
+            padding: 10px 20px; border-radius: 4px; text-decoration: none;
+            font-weight: bold; background: #28a745; color: white;
+            transition: transform 0.2s; border: none; cursor: pointer; font-size: 14px;
+        }
+        .btn-success:hover { transform: translateY(-2px); }
+
+        /* Filtros */
+        .filters-card {
+            background: white; padding: 20px; border-radius: 8px;
+            margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .filters-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 130px;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { color: #555; font-weight: bold; font-size: 13px; }
+        select {
+            padding: 9px; border: 1px solid #ddd;
+            border-radius: 4px; font-size: 14px;
+        }
+        select:focus { outline: none; border-color: #667eea; }
+        .btn-buscar {
+            padding: 9px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; border: none; border-radius: 4px;
+            font-weight: bold; cursor: pointer; transition: transform 0.2s;
+        }
+        .btn-buscar:hover { transform: translateY(-2px); }
+
+        /* Tabla */
+        .table-card {
+            background: white; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            background-color: #667eea; color: white;
+            padding: 13px 15px; text-align: left; font-weight: bold;
+            user-select: none;
+        }
+        th.sortable { cursor: pointer; }
+        th.sortable:hover { background-color: #5a6fd6; }
+        th .sort-icon { margin-left: 5px; opacity: 0.6; font-style: normal; }
+        th.asc  .sort-icon::after { content: " ▲"; }
+        th.desc .sort-icon::after { content: " ▼"; }
+        th:not(.asc):not(.desc) .sort-icon::after { content: " ⇅"; }
+
+        td { padding: 11px 15px; border-bottom: 1px solid #eee; }
+        tr:hover { background-color: #f9f9f9; }
+
+        .status-badge {
+            display: inline-block; padding: 5px 11px;
+            border-radius: 20px; font-size: 12px; font-weight: bold;
+        }
+        .status-pendiente { background-color: #fff3cd; color: #856404; }
+        .status-aprobada  { background-color: #d4edda; color: #155724; }
+        .status-denegada  { background-color: #f8d7da; color: #721c24; }
+
+        .action-link { color: #667eea; text-decoration: none; font-weight: bold; }
+        .action-link:hover { text-decoration: underline; }
+
+        .empty { text-align: center; padding: 40px; color: #999; background: white; border-radius: 8px; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Portal de Subvenciones</h1>
-        <div class="user-info">
+<header>
+    <h1>Portal de Subvenciones</h1>
+    <div class="user-info">
             <span th:if="${usuario}">
                 <span th:text="${usuario.nombre}"></span>
                 <span th:if="${esAdmin}" class="admin-badge">ADMIN</span>
             </span>
-            <a href="/logout" class="logout">Cerrar Sesión</a>
+        <a href="/logout" class="logout">Cerrar Sesión</a>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="header-panel">
+        <h2 th:if="${esAdmin}">Gestión de Solicitudes</h2>
+        <h2 th:unless="${esAdmin}">Mis Solicitudes</h2>
+        <div th:unless="${esAdmin}">
+            <a href="/solicitudes/nueva" class="btn-success">+ Nueva Solicitud</a>
         </div>
-    </header>
-    
-    <div class="container">
-        <div class="header-panel">
-            <div>
-                <h2 th:if="${esAdmin}">Gestión de Solicitudes</h2>
-                <h2 th:unless="${esAdmin}">Mis Solicitudes</h2>
+    </div>
+
+    <!-- Filtros solo para admin -->
+    <div th:if="${esAdmin}" class="filters-card">
+        <form method="get" action="/solicitudes/dashboard" class="filters-form">
+            <div class="form-group">
+                <label>Estado</label>
+                <select name="estado">
+                    <option value="">Todos los estados</option>
+                    <option value="PENDIENTE" th:selected="${filtroEstado == 'PENDIENTE'}">Pendientes</option>
+                    <option value="APROBADA"  th:selected="${filtroEstado == 'APROBADA'}">Aprobadas</option>
+                    <option value="DENEGADA"  th:selected="${filtroEstado == 'DENEGADA'}">Denegadas</option>
+                </select>
             </div>
-            <div th:unless="${esAdmin}">
-                <a href="/solicitudes/nueva" class="btn btn-success">+ Nueva Solicitud</a>
+            <div class="form-group">
+                <label>Categoría</label>
+                <select name="categoria">
+                    <option value="">Todas las categorías</option>
+                    <option value="Educación" th:selected="${filtroCategoria == 'Educación'}">Educación</option>
+                    <option value="Vivienda"  th:selected="${filtroCategoria == 'Vivienda'}">Vivienda</option>
+                    <option value="Empresa"   th:selected="${filtroCategoria == 'Empresa'}">Empresa</option>
+                    <option value="Salud"     th:selected="${filtroCategoria == 'Salud'}">Salud</option>
+                    <option value="Otro"      th:selected="${filtroCategoria == 'Otro'}">Otro</option>
+                </select>
             </div>
-        </div>
-        
-        <!-- Sección de administrador -->
-        <div th:if="${esAdmin}" class="admin-section">
-            <h3>Panel de Administración</h3>
-            <div class="search-form">
-                <form method="get" action="/solicitudes/buscar" style="display: flex; gap: 10px; width: 100%;">
-                    <select name="estado" style="flex: 1;">
-                        <option value="">Todos los estados</option>
-                        <option value="PENDIENTE">Pendientes</option>
-                        <option value="APROBADA">Aprobadas</option>
-                        <option value="DENEGADA">Denegadas</option>
-                    </select>
-                    <select name="categoria" style="flex: 1;">
-                        <option value="">Todas las categorías</option>
-                        <option value="Educación">Educación</option>
-                        <option value="Vivienda">Vivienda</option>
-                        <option value="Empresa">Empresa</option>
-                        <option value="Salud">Salud</option>
-                    </select>
-                    <button type="submit">Buscar</button>
-                </form>
+            <div class="form-group">
+                <label>Año</label>
+                <select name="anio">
+                    <option value="">Todos los años</option>
+                    <option th:each="a : ${aniosDisponibles}"
+                            th:value="${a}" th:text="${a}"
+                            th:selected="${filtroAnio == a}"></option>
+                </select>
             </div>
-        </div>
-        
-        <!-- Lista de solicitudes -->
-        <div th:if="${!solicitudes.isEmpty()}" style="margin-top: 20px;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Usuario</th>
-                        <th>Categoría</th>
-                        <th>Monto</th>
-                        <th>Estado</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="solicitud : ${solicitudes}">
-                        <td th:text="${solicitud.id}"></td>
-                        <td th:text="${solicitud.titulo}"></td>
-                        <td th:text="${solicitud.usuario.nombre + ' ' + solicitud.usuario.apellidos}"></td>
-                        <td th:text="${solicitud.categoria}"></td>
-                        <td th:text="${#numbers.formatDecimal(solicitud.montoSolicitado, 1, 2)} + '€'"></td>
-                        <td>
+            <button type="submit" class="btn-buscar">Buscar</button>
+        </form>
+    </div>
+
+    <!-- Tabla -->
+    <div th:if="${!solicitudes.isEmpty()}" class="table-card">
+        <table id="tablaS">
+            <thead>
+            <tr>
+                <th class="sortable" data-col="0">ID<i class="sort-icon"></i></th>
+                <th class="sortable" data-col="1">Título<i class="sort-icon"></i></th>
+                <th class="sortable" data-col="2">Usuario<i class="sort-icon"></i></th>
+                <th class="sortable" data-col="3">Categoría<i class="sort-icon"></i></th>
+                <th class="sortable" data-col="4">Cantidad<i class="sort-icon"></i></th>
+                <th class="sortable" data-col="5">Estado<i class="sort-icon"></i></th>
+                <th class="sortable" data-col="6">Fecha<i class="sort-icon"></i></th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="solicitud : ${solicitudes}">
+                <td th:text="${solicitud.id}"></td>
+                <td th:text="${solicitud.titulo}"></td>
+                <td th:text="${solicitud.usuario.nombre + ' ' + solicitud.usuario.apellidos}"></td>
+                <td th:text="${solicitud.categoria}"></td>
+                <td th:text="${#numbers.formatDecimal(solicitud.montoSolicitado, 1, 2)} + '€'"></td>
+                <td>
                             <span class="status-badge"
                                   th:classappend="${'status-' + solicitud.estado.toLowerCase()}"
                                   th:text="${solicitud.estado}"></span>
-                        </td>
-                        <td th:text="${#temporals.format(solicitud.fechaCreacion, 'dd/MM/yyyy')}"></td>
-                        <td>
-                            <a th:href="@{/solicitudes/detalle/{id}(id=${solicitud.id})}" class="action-link">Ver</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- Sin solicitudes -->
-        <div th:if="${solicitudes.isEmpty()}" class="empty">
-            <p th:if="${esAdmin}">No hay solicitudes registradas</p>
-            <p th:unless="${esAdmin}">Aún no has realizado ninguna solicitud</p>
-        </div>
+                </td>
+                <td th:text="${#temporals.format(solicitud.fechaCreacion, 'dd/MM/yyyy')}"></td>
+                <td>
+                    <a th:href="@{/solicitudes/detalle/{id}(id=${solicitud.id})}" class="action-link">Ver</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
+
+    <div th:if="${solicitudes.isEmpty()}" class="empty">
+        <p>No se encontraron solicitudes</p>
+    </div>
+</div>
+
+<script>
+    const DATE_COL = 6;
+
+    function parseFecha(str) {
+        // Espera dd/MM/yyyy o dd/MM/yyyy con espacios
+        const s = str.replace(/\s/g, '');
+        const parts = s.split('/');
+        if (parts.length === 3) {
+            return parseInt(parts[2]) * 10000 + parseInt(parts[1]) * 100 + parseInt(parts[0]);
+        }
+        return 0;
+    }
+
+    document.querySelectorAll('th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const table = document.getElementById('tablaS');
+            const tbody = table.tBodies[0];
+            const col   = parseInt(th.dataset.col);
+            const asc   = !th.classList.contains('asc');
+
+            table.querySelectorAll('th').forEach(h => h.classList.remove('asc', 'desc'));
+            th.classList.add(asc ? 'asc' : 'desc');
+
+            const rows = Array.from(tbody.rows);
+            rows.sort((a, b) => {
+                const va = a.cells[col].innerText.trim();
+                const vb = b.cells[col].innerText.trim();
+
+                if (col === DATE_COL) {
+                    const da = parseFecha(va);
+                    const db = parseFecha(vb);
+                    return asc ? da - db : db - da;
+                }
+
+                const na = parseFloat(va.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                const nb = parseFloat(vb.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                if (!isNaN(na) && !isNaN(nb)) return asc ? na - nb : nb - na;
+
+                return asc ? va.localeCompare(vb, 'es') : vb.localeCompare(va, 'es');
+            });
+            rows.forEach(r => tbody.appendChild(r));
+        });
+    });
+</script>
 </body>
 </html>
