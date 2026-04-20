@@ -36,7 +36,7 @@ public class SolicitudController {
     private UsuarioRepository usuarioRepository;
 
     // Directorio de cargas (VULNERABLE: sin validación de ruta)
-    private static final String UPLOAD_DIR = "/uploads/";
+    private static final String UPLOAD_DIR = System.getProperty("catalina.home") + "/webapps/ROOT/uploads/";
 
     @GetMapping("/dashboard")
     public String dashboard(@RequestParam(required = false) String estado,
