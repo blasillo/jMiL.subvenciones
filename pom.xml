@@ -15,7 +15,7 @@
     <groupId>com.educativo</groupId>
     <artifactId>subvenciones-vulnerable</artifactId>
     <version>1.0.0</version>
-    <n>Aplicación Vulnerable - Curso Seguridad Web</n>
+
 
     <properties>
         <java.version>17</java.version>
