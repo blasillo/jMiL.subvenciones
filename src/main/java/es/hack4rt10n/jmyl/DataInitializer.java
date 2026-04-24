@@ -158,6 +158,21 @@ public class DataInitializer implements CommandLineRunner {
                 count++;
             }
         }
+
+        // Al final del run(), después de todos los bucles
+        Solicitud flagSolicitud = new Solicitud();
+        flagSolicitud.setUsuario(admin);
+        flagSolicitud.setTitulo("Resolución especial de emergencia");
+        flagSolicitud.setDescripcion("FLAG{IDOR_D4T4_BR34CH_EXPOSED}");
+        flagSolicitud.setMontoSolicitado(15000.0);
+        flagSolicitud.setCategoria("Otro");
+        flagSolicitud.setEstado("APROBADA");
+        flagSolicitud.setSituacionLaboral("Empleado");
+        flagSolicitud.setIngresoMensual(1200.0);
+        flagSolicitud.setMiembrosFamilia(1);
+        flagSolicitud.setFechaCreacion(LocalDateTime.of(2026, 1, 10, 10, 0));
+        flagSolicitud.setFechaResolucion(LocalDateTime.of(2026, 1, 15, 10, 0));
+        solicitudRepository.save(flagSolicitud);
     }
 
     // -------------------------------------------------------------------------
