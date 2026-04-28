@@ -232,6 +232,14 @@ public class SolicitudController {
         if (solicitud.isEmpty()) {
             return "error";
         }
+        String estadoAnterior = solicitud.get().getEstado();
+
+        // BANDERA DE EXPLOTACIÓN: si un usuario NO-ADMIN aprueba una solicitud DENEGADA
+        if (!"ADMIN".equals(rol) && "DENEGADA".equals(estadoAnterior) && "APROBADA".equals(nuevoEstado)) {
+            String flag = "FLAG{Broken_Access_Control_Explotado}";
+            String descripcionActual = solicitud.get().getDescripcion();
+            solicitud.get().setDescripcion(descripcionActual + "\n\n[VULNERABILIDAD EXPLOTADA]\n" + flag);
+        }
 
         // VULNERABILIDAD: Manipulación de parámetros
         // El cliente puede enviar cualquier estado, no valida contra lista permitida
